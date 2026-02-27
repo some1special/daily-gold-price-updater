@@ -1,0 +1,34 @@
+name: Update Metal Prices
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day
+  workflow_dispatch:      # Allows manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run script
+        env:
+          # This maps your GitHub Secret to an Environment Variable
+          METALS_API_KEY: ${{ secrets.METALS_API_KEY }}
+        run: python fetch_prices.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add USD.json EUR.json
+          git commit -m "Update prices" || exit 0
+          git push
