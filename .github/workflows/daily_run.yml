@@ -1,12 +1,18 @@
 name: Update Metal Prices
+
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs every day
-  workflow_dispatch:      # Allows manual trigger
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+  workflow_dispatch:      # Allows you to click "Run workflow" manually
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    # This section is CRITICAL to allow the bot to save files back to your repo
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,7 +27,6 @@ jobs:
 
       - name: Run script
         env:
-          # This maps your GitHub Secret to an Environment Variable
           METALS_API_KEY: ${{ secrets.METALS_API_KEY }}
         run: python fetch_prices.py
 
@@ -29,6 +34,12 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add USD.json EUR.json
-          git commit -m "Update prices" || exit 0
+          
+          # Only add the files if they actually exist/were created
+          git add USD.json EUR.json || echo "Files not found"
+          
+          # Commit only if there are changes; "exit 0" prevents the action from failing if nothing changed
+          git commit -m "Update prices: $(date)" || exit 0
+          
+          # Push using the automatic GITHUB_TOKEN for authentication
           git push
