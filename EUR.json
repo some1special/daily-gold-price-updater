@@ -1,16 +1,16 @@
 {
   "metals": {
-    "gold": 3582.695,
-    "silver": 48.1175,
-    "platinum": 1392.91,
-    "palladium": 940.55,
-    "copper": 0.3973,
-    "nickel": 0.443,
-    "aluminum": 0.0834,
-    "zinc": 0.1022,
-    "lead": 0.0527
+    "gold": 3567.135,
+    "silver": 48.068,
+    "platinum": 1379.11,
+    "palladium": 930.75,
+    "copper": 0.4019,
+    "nickel": 0.4391,
+    "aluminum": 0.084,
+    "zinc": 0.1039,
+    "lead": 0.0526
   },
   "timestamps": {
-    "metal": "2026-10-23T03:30:03.600Z"
+    "metal": "2026-10-24T03:24:04.752Z"
   }
 }
